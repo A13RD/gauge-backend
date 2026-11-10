@@ -36,8 +36,7 @@ export function errorMiddleware(
       }
       case 'P2003': {
         res.status(409).json({
-          message:
-            'El recurso relacionado no existe o está protegido',
+          message: 'El recurso relacionado no existe o está protegido',
         });
         return;
       }
