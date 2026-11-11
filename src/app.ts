@@ -15,7 +15,11 @@ const allowedOrigins = rawOrigins
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
     const normalizedOrigin = origin ? origin.replace(/\/$/, '') : undefined;
-    if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
+    const isVercelDomain =
+      normalizedOrigin &&
+      (normalizedOrigin.endsWith('.vercel.app') || normalizedOrigin.includes('vercel.app'));
+
+    if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin) || isVercelDomain) {
       callback(null, true);
     } else {
       callback(new Error(`Origen CORS no permitido: ${origin}`));
@@ -29,6 +33,24 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Endpoints de comprobación de salud directa en raíz
+app.get('/health', (_req: Request, res: Response) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'gauge-backend',
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get('/', (_req: Request, res: Response) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'gauge-backend',
+    message: 'GAUGE Backend API en ejecución.',
+    health: '/api/health',
+  });
+});
 
 app.use('/api', apiRouter);
 
