@@ -7,15 +7,12 @@
     "dev": "nodemon --watch src -e ts --exec ts-node src/server.ts",
     "build": "prisma generate && tsc",
     "postinstall": "prisma generate",
+    "seed": "ts-node prisma/seed.ts",
     "start": "node dist/server.js",
     "format": "prettier --write \"src/**/*.ts\" \"prisma/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"prisma/**/*.ts\"",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "ts-node --transpile-only prisma/seed.ts"
-  },
-  "prisma": {
-    "seed": "ts-node --transpile-only prisma/seed.ts"
+    "prisma:migrate": "prisma migrate dev"
   },
   "keywords": [],
   "author": "",
