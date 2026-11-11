@@ -45,6 +45,9 @@ export class UpdateGameUseCase {
     let newCoverUrl: string | undefined = undefined;
     if (file) {
       newCoverUrl = await this.storageService.uploadFile(file, 'covers');
+      if (existing.coverUrl) {
+        await this.storageService.deleteFile(existing.coverUrl);
+      }
     }
 
     return this.gameRepository.update(id, {
