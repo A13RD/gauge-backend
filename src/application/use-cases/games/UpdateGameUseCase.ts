@@ -19,7 +19,12 @@ export class UpdateGameUseCase {
     private readonly storageService: SupabaseStorageService
   ) {}
 
-  async execute(id: string, dto: UpdateGameDTO, file?: Express.Multer.File): Promise<Game> {
+  async execute(
+    id: string,
+    dto: UpdateGameDTO,
+    coverFile?: Express.Multer.File,
+    bannerFile?: Express.Multer.File
+  ): Promise<Game> {
     const existing = await this.gameRepository.findById(id);
     if (!existing) {
       throw new NotFoundError('Videojuego no encontrado o ha sido eliminado');
@@ -43,18 +48,28 @@ export class UpdateGameUseCase {
     }
 
     let newCoverUrl: string | undefined = undefined;
-    if (file) {
-      newCoverUrl = await this.storageService.uploadFile(file, 'covers');
+    if (coverFile) {
+      newCoverUrl = await this.storageService.uploadFile(coverFile, 'covers');
       if (existing.coverUrl) {
         await this.storageService.deleteFile(existing.coverUrl);
       }
+    }
+
+    let newBannerUrl: string | null | undefined = undefined;
+    if (bannerFile) {
+      newBannerUrl = await this.storageService.uploadFile(bannerFile, 'banners');
+      if (existing.bannerUrl) {
+        await this.storageService.deleteFile(existing.bannerUrl);
+      }
+    } else if (dto.bannerUrl !== undefined) {
+      newBannerUrl = dto.bannerUrl;
     }
 
     return this.gameRepository.update(id, {
       title: dto.title ? dto.title.trim() : undefined,
       description: dto.description ? dto.description.trim() : undefined,
       coverUrl: newCoverUrl,
-      bannerUrl: dto.bannerUrl !== undefined ? dto.bannerUrl : undefined,
+      bannerUrl: newBannerUrl,
       releaseDate: parsedDate,
       genreId: dto.genreId,
     });

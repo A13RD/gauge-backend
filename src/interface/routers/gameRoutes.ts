@@ -10,7 +10,7 @@ import { UpdateGameUseCase } from '../../application/use-cases/games/UpdateGameU
 import { SoftDeleteGameUseCase } from '../../application/use-cases/games/SoftDeleteGameUseCase';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { roleMiddleware } from '../middlewares/roleMiddleware';
-import { uploadSingleCover } from '../middlewares/uploadMiddleware';
+import { uploadGameImages } from '../middlewares/uploadMiddleware';
 
 export const gameRoutes = Router();
 
@@ -41,7 +41,7 @@ gameRoutes.post(
   '/',
   authMiddleware,
   roleMiddleware(['ADMIN']),
-  uploadSingleCover,
+  uploadGameImages,
   gameController.create
 );
 
@@ -49,7 +49,7 @@ gameRoutes.put(
   '/:id',
   authMiddleware,
   roleMiddleware(['ADMIN']),
-  uploadSingleCover,
+  uploadGameImages,
   gameController.update
 );
 

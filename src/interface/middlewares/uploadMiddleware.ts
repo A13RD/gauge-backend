@@ -32,3 +32,8 @@ export const upload = multer({
 });
 
 export const uploadSingleCover = upload.single('image');
+
+export const uploadGameImages = upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'banner', maxCount: 1 },
+]);

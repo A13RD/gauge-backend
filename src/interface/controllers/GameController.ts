@@ -44,7 +44,9 @@ export class GameController {
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { title, description, releaseDate, genreId, bannerUrl } = req.body;
-      const file = req.file;
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const coverFile = files?.['image']?.[0] || req.file;
+      const bannerFile = files?.['banner']?.[0];
 
       const created = await this.createGameUseCase.execute(
         {
@@ -54,7 +56,8 @@ export class GameController {
           genreId,
           bannerUrl,
         },
-        file
+        coverFile,
+        bannerFile
       );
 
       res.status(201).json(created);
@@ -67,7 +70,9 @@ export class GameController {
     try {
       const id = String(req.params.id);
       const { title, description, releaseDate, genreId, bannerUrl } = req.body;
-      const file = req.file;
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const coverFile = files?.['image']?.[0] || req.file;
+      const bannerFile = files?.['banner']?.[0];
 
       const updated = await this.updateGameUseCase.execute(
         id,
@@ -78,7 +83,8 @@ export class GameController {
           genreId,
           bannerUrl,
         },
-        file
+        coverFile,
+        bannerFile
       );
 
       res.status(200).json(updated);

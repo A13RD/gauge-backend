@@ -19,7 +19,11 @@ export class CreateGameUseCase {
     private readonly storageService: SupabaseStorageService
   ) {}
 
-  async execute(dto: CreateGameDTO, file?: Express.Multer.File): Promise<Game> {
+  async execute(
+    dto: CreateGameDTO,
+    coverFile?: Express.Multer.File,
+    bannerFile?: Express.Multer.File
+  ): Promise<Game> {
     const { title, description, releaseDate, genreId, bannerUrl } = dto;
 
     if (!title || title.trim().length < 2) {
@@ -54,19 +58,24 @@ export class CreateGameUseCase {
       throw new NotFoundError('El género especificado no existe');
     }
 
-    if (!file) {
+    if (!coverFile) {
       throw new BadRequestError(
         'Es obligatorio adjuntar un archivo de imagen como carátula'
       );
     }
 
-    const coverUrl = await this.storageService.uploadFile(file, 'covers');
+    const coverUrl = await this.storageService.uploadFile(coverFile, 'covers');
+    const finalBannerUrl = bannerFile
+      ? await this.storageService.uploadFile(bannerFile, 'banners')
+      : bannerUrl
+      ? bannerUrl.trim()
+      : null;
 
     return this.gameRepository.create({
       title: title.trim(),
       description: description.trim(),
       coverUrl,
-      bannerUrl: bannerUrl ? bannerUrl.trim() : null,
+      bannerUrl: finalBannerUrl,
       releaseDate: parsedDate,
       genreId,
     });
