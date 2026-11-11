@@ -1,6 +1,12 @@
 import dotenv from 'dotenv';
+import path from 'path';
 
+// Carga inicial desde el directorio de trabajo actual
 dotenv.config();
+
+// Fallback robusto al archivo .env situado en la raíz del backend
+const backendEnvPath = path.resolve(__dirname, '../../../.env');
+dotenv.config({ path: backendEnvPath });
 
 function getRequiredEnv(key: string): string {
   const value = process.env[key];

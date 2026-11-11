@@ -6,13 +6,16 @@ import { errorMiddleware } from './interface/middlewares/errorMiddleware';
 
 export const app: Application = express();
 
-const allowedOrigins = [env.FRONTEND_URL, 'http://localhost:3000', 'http://127.0.0.1:3000'].filter(
-  Boolean
-);
+const rawOrigins = [env.FRONTEND_URL, 'http://localhost:3000', 'http://127.0.0.1:3000'];
+const allowedOrigins = rawOrigins
+  .flatMap((o) => (o ? o.split(',') : []))
+  .map((o) => o.trim().replace(/\/$/, ''))
+  .filter(Boolean);
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    const normalizedOrigin = origin ? origin.replace(/\/$/, '') : undefined;
+    if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
       callback(null, true);
     } else {
       callback(new Error(`Origen CORS no permitido: ${origin}`));
