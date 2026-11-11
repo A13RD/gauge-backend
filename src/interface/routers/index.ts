@@ -14,4 +14,3 @@ apiRouter.use('/games', gameRoutes);
 apiRouter.use('/genres', genreRoutes);
 apiRouter.use('/reviews', reviewRoutes);
 apiRouter.use('/users', userRoutes);
-
