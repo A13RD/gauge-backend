@@ -29,10 +29,11 @@ API REST robusta, escalable y segura desarrollada con **Node.js, Express, TypeSc
 ---
 
 ## Stack Tecnológico
-| :---: | :--- |
+
 | Componente | Tecnología |
-| **Entorno de Ejecución** | Node.js  |
-| **Lenguaje** | TypeScript 5+  |
+| :---: | :--- |
+| **Entorno de Ejecución** | Node.js |
+| **Lenguaje** | TypeScript 5+ |
 | **Framework HTTP** | Express 5 |
 | **ORM & Modelado** | Prisma ORM v6.19.3 |
 | **Base de Datos** | PostgreSQL (Alojada en Supabase) |
