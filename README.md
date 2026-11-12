@@ -9,9 +9,9 @@ API REST robusta, escalable y segura desarrollada con **Node.js, Express, TypeSc
 ## Enlaces de Despliegue y Repositorios
 
 
-* **API Backend en Producción:** `https://project-gauge-api.vercel.app/`
-* **Frontend Web en Producción:** `https://gauge-gaming.vercel.app/`
-* **Repositorio Frontend (GitHub):** `https://github.com/A13RD/gauge-frontend`
+- **API Backend en Producción:** <https://project-gauge-api.vercel.app/>
+- **Frontend Web en Producción:** <https://gauge-gaming.vercel.app/>
+- **Repositorio Frontend (GitHub):** <https://github.com/A13RD/gauge-frontend>
 
 ---
 
